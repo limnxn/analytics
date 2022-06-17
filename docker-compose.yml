@@ -1,0 +1,50 @@
+services:
+
+  superset:
+    container_name: superset
+    build:
+      context: ./superset
+      dockerfile: dockerfile-superset
+    volumes:
+      - ./superset/data:/app/superset_home
+    ports:
+      - 8080:8088
+
+  metabase:
+    container_name: metabase
+    build:
+      context: ./metabase
+      dockerfile: dockerfile-metabase
+    volumes:
+      - ./metabase/data:/metabase.db:cached
+    ports:
+      - 3030:3000
+
+  grafana:
+    container_name: grafana
+    build:
+      context: ./grafana
+      dockerfile: dockerfile-grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: passw0rd
+    volumes:
+      - ./grafana/data:/var/lib/grafana
+    ports:
+      - 3000:3000
+
+  mysql:
+    container_name: mysql
+    build:
+      context: ./mysql
+      dockerfile: dockerfile-mysql
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: passw0rd
+    volumes:
+      - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./mysql/initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306

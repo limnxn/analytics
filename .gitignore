@@ -1,0 +1,9 @@
+# Hidden files
+.DS_Store
+
+# Unwanted files
+*.sql
+
+# Unwanted folders
+**/data/*
+!**/data/.gitkeep
